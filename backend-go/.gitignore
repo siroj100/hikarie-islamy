@@ -1,0 +1,33 @@
+# ignore everything
+*
+# unignore all with extensions
+!*.*
+# unignore all dirs
+!*/
+
+# vendor & dep-related
+vendor/
+
+# editor settings
+.glide/
+.idea/
+*.iml
+.vscode/
+
+# temporary files
+tmp/
+
+# Merge conflict file
+*.orig
+
+# binaries
+__debug_bin
+**/*.exe
+
+# unignore build-related files
+!Dockerfile
+!Makefile
+
+## ungignore code & config files
+!**/*.go
+!**/*.toml
