@@ -14,8 +14,8 @@ type (
 	}
 
 	KemenagRepo interface {
-		GetListSurat(ctx context.Context) ([]model.QuranKemenagSurat, error)
-		GetListAyat(ctx context.Context, suratID, ayatStart, ayatEnd int) ([]model.QuranKemenagAyat, error)
+		GetListKemenagSurat(ctx context.Context) ([]model.QuranKemenagSurat, error)
+		GetListKemenagAyat(ctx context.Context, suratID, ayatStart, ayatEnd int) ([]model.QuranKemenagAyat, error)
 	}
 )
 
@@ -24,7 +24,7 @@ func NewKemenag(repo KemenagRepo) KemenagService {
 }
 
 func (s KemenagService) ScrapeListSurat(ctx context.Context) ([]model.QuranKemenagSurat, error) {
-	result, err := s.repo.GetListSurat(ctx)
+	result, err := s.repo.GetListKemenagSurat(ctx)
 	if err != nil {
 		log.Println(errorx.PrintTrace(err))
 		return result, err
@@ -33,7 +33,7 @@ func (s KemenagService) ScrapeListSurat(ctx context.Context) ([]model.QuranKemen
 }
 
 func (s KemenagService) ScrapeListAyat(ctx context.Context, suratID, ayatCount int) ([]model.QuranKemenagAyat, error) {
-	result, err := s.repo.GetListAyat(ctx, suratID, 0, ayatCount)
+	result, err := s.repo.GetListKemenagAyat(ctx, suratID, 0, ayatCount)
 	if err != nil {
 		log.Println(errorx.PrintTrace(err))
 		return result, err

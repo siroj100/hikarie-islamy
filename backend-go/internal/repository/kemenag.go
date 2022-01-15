@@ -18,11 +18,11 @@ type (
 	}
 )
 
-func NewKemenagRepo(client http.Client) KemenagRepo {
+func NewKemenag(client http.Client) KemenagRepo {
 	return KemenagRepo{client: client}
 }
 
-func (r KemenagRepo) GetListSurat(ctx context.Context) ([]model.QuranKemenagSurat, error) {
+func (r KemenagRepo) GetListKemenagSurat(ctx context.Context) ([]model.QuranKemenagSurat, error) {
 	kemenagResp := struct {
 		Data []model.QuranKemenagSurat `json:"data"`
 	}{}
@@ -50,12 +50,12 @@ func (r KemenagRepo) GetListSurat(ctx context.Context) ([]model.QuranKemenagSura
 	return kemenagResp.Data, nil
 }
 
-func (r KemenagRepo) GetListAyat(ctx context.Context, suratID, ayatStart, ayatEnd int) ([]model.QuranKemenagAyat, error) {
+func (r KemenagRepo) GetListKemenagAyat(ctx context.Context, suratID, ayatStart, ayatCount int) ([]model.QuranKemenagAyat, error) {
 	kemenagResp := struct {
 		Data []model.QuranKemenagAyat `json:"data"`
 	}{}
 
-	resp, err := r.client.Get(fmt.Sprintf("https://quran.kemenag.go.id/index.php/api/v1/ayatweb/%d/0/%d/%d", suratID, ayatStart, ayatEnd))
+	resp, err := r.client.Get(fmt.Sprintf("https://quran.kemenag.go.id/index.php/api/v1/ayatweb/%d/0/%d/%d", suratID, ayatStart, ayatCount))
 	if err != nil {
 		log.Println(errorx.PrintTrace(err))
 		return kemenagResp.Data, err

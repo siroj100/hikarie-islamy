@@ -3,18 +3,26 @@ package main
 import (
 	"context"
 	"log"
-	"net/http"
 
-	"github.com/siroj100/hikarie-islamy/internal/repository"
-	"github.com/siroj100/hikarie-islamy/internal/service"
-	"github.com/siroj100/hikarie-islamy/internal/usecase"
+	"github.com/siroj100/hikarie-islamy/cmd/internal"
+	"github.com/siroj100/hikarie-islamy/internal/config"
+	"github.com/siroj100/hikarie-islamy/internal/model/db"
 	"github.com/siroj100/hikarie-islamy/pkg/errorx"
 )
 
 func main() {
-	repo := repository.NewKemenagRepo(http.Client{})
-	svc := service.NewKemenag(repo)
-	ucase := usecase.NewIslamyUseCase(usecase.IslamySvc{Kemenag: svc})
+	conf := config.Init()
+	dbs := internal.InitGormDb(conf.Database)
+	ucase := internal.InitUseCase(conf, dbs)
+
+	db0 := dbs[config.DbIslamy]
+	err := db0.Pri().AutoMigrate(
+		db.QuranL10N{}, db.QuranSurat{}, db.QuranSuratL10N{},
+		db.QuranAyat{}, db.QuranAyatL10N{},
+	)
+	if err != nil {
+		log.Fatalln(errorx.PrintTrace(err))
+	}
 
 	ctx := context.TODO()
 	listSurat, err := ucase.ScrapeKemenagSurat(ctx)
@@ -25,5 +33,10 @@ func main() {
 	if err != nil {
 		log.Fatalln(errorx.PrintTrace(err))
 	}
+	quranData := ucase.ConvertKemenagToDb(listSurat, mapSuratAyat)
 	log.Println(len(mapSuratAyat))
+	err = ucase.InsertQuranData(ctx, quranData)
+	if err != nil {
+		log.Fatalln(errorx.PrintTrace(err))
+	}
 }
