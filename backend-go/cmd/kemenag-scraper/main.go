@@ -25,17 +25,17 @@ func main() {
 	}
 
 	ctx := context.TODO()
-	listSurat, err := ucase.ScrapeKemenagSurat(ctx)
+	listSurat, err := ucase.KemenagScrapeSurat(ctx)
 	if err != nil {
 		log.Fatalln(errorx.PrintTrace(err))
 	}
-	mapSuratAyat, err := ucase.ScrapeKemenagAyat(ctx, listSurat)
+	mapSuratAyat, err := ucase.KemenagScrapeAyat(ctx, listSurat)
 	if err != nil {
 		log.Fatalln(errorx.PrintTrace(err))
 	}
-	quranData := ucase.ConvertKemenagToDb(listSurat, mapSuratAyat)
+	quranData := ucase.KemenagConvertToQuranData(listSurat, mapSuratAyat)
 	log.Println(len(mapSuratAyat))
-	err = ucase.InsertQuranData(ctx, quranData)
+	err = ucase.QuranInsertQuranData(ctx, quranData)
 	if err != nil {
 		log.Fatalln(errorx.PrintTrace(err))
 	}

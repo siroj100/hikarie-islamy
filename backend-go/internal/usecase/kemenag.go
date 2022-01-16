@@ -6,12 +6,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/siroj100/hikarie-islamy/internal/constant/kemenag"
 	"github.com/siroj100/hikarie-islamy/internal/model"
 	"github.com/siroj100/hikarie-islamy/internal/model/db"
 	"github.com/siroj100/hikarie-islamy/pkg/errorx"
 )
 
-func (u IslamyUseCase) ScrapeKemenagSurat(ctx context.Context) ([]model.QuranKemenagSurat, error) {
+func (u IslamyUseCase) KemenagScrapeSurat(ctx context.Context) ([]model.QuranKemenagSurat, error) {
 	result, err := u.kemenag.ScrapeListSurat(ctx)
 	if err != nil {
 		log.Println(errorx.PrintTrace(err))
@@ -21,7 +22,7 @@ func (u IslamyUseCase) ScrapeKemenagSurat(ctx context.Context) ([]model.QuranKem
 	return result, nil
 }
 
-func (u IslamyUseCase) ScrapeKemenagAyat(ctx context.Context, listSurat []model.QuranKemenagSurat) (map[int][]model.QuranKemenagAyat, error) {
+func (u IslamyUseCase) KemenagScrapeAyat(ctx context.Context, listSurat []model.QuranKemenagSurat) (map[int][]model.QuranKemenagAyat, error) {
 	result := make(map[int][]model.QuranKemenagAyat)
 	for _, surat := range listSurat {
 		time.Sleep(1 * time.Second)
@@ -36,7 +37,7 @@ func (u IslamyUseCase) ScrapeKemenagAyat(ctx context.Context, listSurat []model.
 	return result, nil
 }
 
-func (u IslamyUseCase) ConvertKemenagToDb(kemenagSurat []model.QuranKemenagSurat, kemenagAyat map[int][]model.QuranKemenagAyat) model.QuranData {
+func (u IslamyUseCase) KemenagConvertToQuranData(kemenagSurat []model.QuranKemenagSurat, kemenagAyat map[int][]model.QuranKemenagAyat) model.QuranData {
 	result := model.QuranData{}
 	result.LangData = db.QuranL10N{
 		LangCode:   "id",
@@ -87,40 +88,24 @@ func (u IslamyUseCase) ConvertKemenagToDb(kemenagSurat []model.QuranKemenagSurat
 	return result
 }
 
-func (u IslamyUseCase) InsertQuranData(ctx context.Context, quranData model.QuranData) error {
-	quranL10N, err := u.quran.SaveQuranL10N(ctx, quranData.LangData)
+func (u IslamyUseCase) KemenagV1ListSurat(ctx context.Context, startSurat, count int) ([]model.QuranKemenagSurat, error) {
+	var result []model.QuranKemenagSurat
+	listSurat, err := u.quran.ListSuratL10N(ctx, kemenag.LangID, startSurat, count)
 	if err != nil {
 		log.Println(errorx.PrintTrace(err))
-		return err
+		return result, errorx.ErrServerError
 	}
-	for i, surat := range quranData.ListSurat {
-		_, err = u.quran.SaveQuranSurat(ctx, surat)
-		if err != nil {
-			log.Println(errorx.PrintTrace(err))
-			return err
-		}
-		suratL10N := quranData.ListSuratL10N[i]
-		suratL10N.LangID = quranL10N.LangID
-		_, err = u.quran.SaveQuranSuratL10N(ctx, suratL10N)
-		if err != nil {
-			log.Println(errorx.PrintTrace(err))
-			return err
-		}
-		for j, ayat := range quranData.ListAyat[surat.SuratID] {
-			dbAyat, err := u.quran.SaveQuranAyat(ctx, ayat)
-			if err != nil {
-				log.Println(errorx.PrintTrace(err))
-				return err
-			}
-			ayatL10N := quranData.ListAyatL10N[surat.SuratID][j]
-			ayatL10N.LangID = quranL10N.LangID
-			ayatL10N.AyatID = dbAyat.AyatID
-			_, err = u.quran.SaveQuranAyatL10N(ctx, ayatL10N)
-			if err != nil {
-				log.Println(errorx.PrintTrace(err))
-				return err
-			}
-		}
+	result = u.kemenag.QuranSuratL10NToKemenag(listSurat)
+	return result, nil
+}
+
+func (u IslamyUseCase) KemenagV1ListAyat(ctx context.Context, suratID, startAyat, count int) ([]model.QuranKemenagAyat, error) {
+	var result []model.QuranKemenagAyat
+	listAyat, err := u.quran.ListAyatL10N(ctx, kemenag.LangID, suratID, startAyat, count)
+	if err != nil {
+		log.Println(errorx.PrintTrace(err))
+		return result, errorx.ErrServerError
 	}
-	return nil
+	result = u.kemenag.QuranAyatL10NToKemenag(listAyat)
+	return result, nil
 }

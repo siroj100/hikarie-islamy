@@ -18,4 +18,15 @@ type (
 		PageNumber         int    `json:"page_number"`
 		TranslationAyaText string `json:"translation_aya_text"`
 	}
+
+	QuranKemenagV1ListSuratReq struct {
+		StartSurat int `param:"startSurat"`
+		Count      int `param:"count"`
+	}
+
+	QuranKemenagV1ListAyatReq struct {
+		SuratID   int `param:"suratID"`
+		StartAyat int `param:"startAyat"`
+		Count     int `param:"count"`
+	}
 )

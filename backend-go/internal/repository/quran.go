@@ -40,3 +40,23 @@ func (r QuranRepo) InsertQuranAyatL10N(ctx context.Context, data *db.QuranAyatL1
 	err := r.db.GetTx(ctx).Create(data).Error
 	return err
 }
+
+func (r QuranRepo) ListSuratL10N(ctx context.Context, langID, startID, count int) ([]db.QuranSuratL10N, error) {
+	var result []db.QuranSuratL10N
+	err := r.db.GetTxRead(ctx).Model(db.QuranSuratL10N{}).
+		Joins("Surat").
+		Where("lang_id = ? AND quran_surat_l10n.surat_id > ?", langID, startID).
+		Limit(count).
+		Find(&result).Error
+	return result, err
+}
+
+func (r QuranRepo) ListAyatL10N(ctx context.Context, langID, suratID, startID, count int) ([]db.QuranAyatL10N, error) {
+	var result []db.QuranAyatL10N
+	err := r.db.GetTxRead(ctx).Model(db.QuranAyatL10N{}).
+		Joins("Ayat").
+		Where("lang_id = ? AND \"Ayat\".surat_id = ? AND \"Ayat\".ayat_number > ?", langID, suratID, startID).
+		Limit(count).
+		Find(&result).Error
+	return result, err
+}

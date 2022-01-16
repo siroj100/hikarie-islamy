@@ -20,6 +20,8 @@ type (
 		LangID    int `gorm:"index:idx_quran_surat_l10n,unique"`
 		Translit  string
 		Translate string
+
+		Surat QuranSurat `gorm:"foreignKey:SuratID"`
 	}
 
 	QuranAyat struct {
@@ -36,6 +38,8 @@ type (
 		PageNumber int
 		Translit   string
 		Translate  string
+
+		Ayat QuranAyat `gorm:"foreignKey:AyatID"`
 	}
 )
 
