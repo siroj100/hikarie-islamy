@@ -6,4 +6,4 @@ Host = "localhost"
 User = "root"
 Password = "root"
 DbName = "islamy"
-Debug = true
+Debug = false
