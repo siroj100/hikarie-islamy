@@ -1,0 +1,12 @@
+version: '3'
+networks:
+  default:
+    name: "prod"
+services:
+  backend:
+    image: siroj100/hikarie-islamy-be
+    environment:
+      - DATABASE_ISLAMY_HOST=postgres
+    volumes:
+      - ./:/code
+    restart: unless-stopped
