@@ -65,7 +65,7 @@ func (s KemenagService) QuranAyatL10NToKemenag(listAyat []db.QuranAyatL10N) []mo
 			AyaText:            data.Ayat.AyatText,
 			SuraID:             data.Ayat.SuratID,
 			JuzID:              data.Ayat.JuzID,
-			PageNumber:         data.PageNumber,
+			PageNumber:         data.Ayat.PageNumber,
 			TranslationAyaText: data.Translate,
 		})
 	}

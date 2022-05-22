@@ -30,12 +30,13 @@ type (
 		AyatNumber int `gorm:"index:idx_quran_ayat,unique"`
 		JuzID      int
 		AyatText   string
+		PageNumber int
 	}
 
 	QuranAyatL10N struct {
 		AyatID     int `gorm:"index:idx_quran_ayat_l10n,unique"`
 		LangID     int `gorm:"index:idx_quran_ayat_l10n,unique"`
-		PageNumber int
+		//PageNumber int
 		Translit   string
 		Translate  string
 

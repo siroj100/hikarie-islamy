@@ -68,10 +68,10 @@ func (u IslamyUseCase) KemenagConvertToQuranData(kemenagSurat []model.QuranKemen
 				AyatNumber: dataAyat.AyaNumber,
 				AyatText:   dataAyat.AyaText,
 				JuzID:      dataAyat.JuzID,
+				PageNumber: dataAyat.PageNumber,
 			}
 			ayatL10N := db.QuranAyatL10N{
 				Translate:  dataAyat.TranslationAyaText,
-				PageNumber: dataAyat.PageNumber,
 			}
 			listAyat = append(listAyat, ayat)
 			listAyatL10N = append(listAyatL10N, ayatL10N)
