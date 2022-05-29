@@ -32,6 +32,7 @@ func Init() Config {
 	viper.SetConfigType("toml")
 	viper.AddConfigPath("../../configs")
 	viper.AddConfigPath("../configs")
+	viper.AddConfigPath("./configs")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("/etc/hikarie-islamy/")
 	err = viper.MergeInConfig()
