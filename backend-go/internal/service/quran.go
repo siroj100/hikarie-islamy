@@ -21,6 +21,8 @@ type (
 		InsertQuranAyatL10N(ctx context.Context, data *db.QuranAyatL10N) error
 		ListSuratL10N(ctx context.Context, langID, startID, count int) ([]db.QuranSuratL10N, error)
 		ListAyatL10N(ctx context.Context, langID, suratID, startID, count int) ([]db.QuranAyatL10N, error)
+
+		ListFirstAyat(ctx context.Context, startID, count int) ([]db.QuranAyat, error)
 	}
 )
 
@@ -94,6 +96,15 @@ func (s QuranService) ListSuratL10N(ctx context.Context, langID, startID, count 
 
 func (s QuranService) ListAyatL10N(ctx context.Context, langID, suratID, startID, count int) ([]db.QuranAyatL10N, error) {
 	result, err := s.repo.ListAyatL10N(ctx, langID, suratID, startID, count)
+	if err != nil {
+		log.Println(errorx.PrintTrace(err))
+		return result, errorx.ErrServerError
+	}
+	return result, nil
+}
+
+func (s QuranService) ListFirstAyat(ctx context.Context, startID, count int) ([]db.QuranAyat, error) {
+	result, err := s.repo.ListFirstAyat(ctx, startID, count)
 	if err != nil {
 		log.Println(errorx.PrintTrace(err))
 		return result, errorx.ErrServerError

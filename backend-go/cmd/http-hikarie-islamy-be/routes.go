@@ -26,5 +26,11 @@ func initRoutes(cfg config.Config, ucase usecase.IslamyUseCase) http.Handler {
 		kemenagEp.GET("/v1/surat/:startSurat/:count", httpHandler.KemenagV1Surat)
 		kemenagEp.GET("/v1/ayatweb/:suratID/0/:startAyat/:count", httpHandler.KemenagV1Ayat)
 	}
+
+	v1Ep := e.Group("/api/v1")
+	{
+		v1Ep.GET("/sura", httpHandler.V1ListSura)
+	}
+
 	return e
 }

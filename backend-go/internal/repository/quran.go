@@ -60,3 +60,12 @@ func (r QuranRepo) ListAyatL10N(ctx context.Context, langID, suratID, startID, c
 		Find(&result).Error
 	return result, err
 }
+
+func (r QuranRepo) ListFirstAyat(ctx context.Context, startID, count int) ([]db.QuranAyat, error) {
+	var result []db.QuranAyat
+	err := r.db.GetTxRead(ctx).Model(db.QuranAyat{}).
+		Where("ayat_number = 1 AND surat_id > ?", startID).
+		Limit(count).
+		Find(&result).Error
+	return result, err
+}

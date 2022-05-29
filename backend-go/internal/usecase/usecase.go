@@ -2,20 +2,22 @@ package usecase
 
 import (
 	"context"
-
 	"github.com/siroj100/hikarie-islamy/internal/model"
 	"github.com/siroj100/hikarie-islamy/internal/model/db"
+	v1 "github.com/siroj100/hikarie-islamy/internal/model/v1"
 )
 
 type (
 	IslamyUseCase struct {
 		kemenag KemenagSvc
 		quran   QuranSvc
+		v1Quran V1QuranSvc
 	}
 
 	IslamySvc struct {
 		Kemenag KemenagSvc
 		Quran   QuranSvc
+		V1Quran V1QuranSvc
 	}
 
 	KemenagSvc interface {
@@ -33,6 +35,11 @@ type (
 		SaveQuranAyatL10N(ctx context.Context, data db.QuranAyatL10N) (db.QuranAyatL10N, error)
 		ListSuratL10N(ctx context.Context, langID, startID, count int) ([]db.QuranSuratL10N, error)
 		ListAyatL10N(ctx context.Context, langID, suratID, startID, count int) ([]db.QuranAyatL10N, error)
+		ListFirstAyat(ctx context.Context, startID, count int) ([]db.QuranAyat, error)
+	}
+
+	V1QuranSvc interface {
+		BuildListSura(listSura []db.QuranSuratL10N, listFirstAya []db.QuranAyat) ([]v1.QuranSura, error)
 	}
 )
 
@@ -40,5 +47,6 @@ func NewIslamyUseCase(svc IslamySvc) IslamyUseCase {
 	return IslamyUseCase{
 		kemenag: svc.Kemenag,
 		quran:   svc.Quran,
+		v1Quran: svc.V1Quran,
 	}
 }
