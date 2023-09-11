@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/siroj100/hikarie-islamy/internal/model"
+	"github.com/siroj100/hikarie-islamy/internal/model/quran"
 	"github.com/siroj100/hikarie-islamy/pkg/errorx"
 )
 
@@ -44,4 +45,8 @@ func (u IslamyUseCase) QuranInsertQuranData(ctx context.Context, quranData model
 		}
 	}
 	return nil
+}
+
+func (u IslamyUseCase) QuranV1Page(ctx context.Context, layoutID, pageNumber int) (quran.V1PageResp, error) {
+	return u.quran.GetV1Page(ctx, layoutID, pageNumber)
 }

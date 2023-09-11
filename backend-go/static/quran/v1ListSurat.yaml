@@ -1,0 +1,10 @@
+LayoutID: 1
+NumOfLines: 15
+
+ListSurat:
+  - SuratID: 1
+    Name: الفاتحة
+    AyatCount: 7
+  - SuratID: 2
+    Name: البقرة
+    AyatCount: 286

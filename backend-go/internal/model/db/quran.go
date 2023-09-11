@@ -10,16 +10,16 @@ type (
 	}
 
 	QuranSurat struct {
-		SuratID   int `gorm:"primaryKey"`
-		Name      string
-		AyatCount int
+		SuratID   int    `gorm:"primaryKey" json:"suratId" yaml:"suratId"`
+		Name      string `json:"name" yaml:"name"`
+		AyatCount int    `json:"ayatCount" yaml:"ayatCount"`
 	}
 
 	QuranSuratL10N struct {
-		SuratID   int `gorm:"index:idx_quran_surat_l10n,unique"`
-		LangID    int `gorm:"index:idx_quran_surat_l10n,unique"`
-		Translit  string
-		Translate string
+		SuratID   int    `gorm:"index:idx_quran_surat_l10n,unique" yaml:"suratId"`
+		LangID    int    `gorm:"index:idx_quran_surat_l10n,unique" yaml:"langId"`
+		Translit  string `yaml:"translit"`
+		Translate string `yaml:"translate"`
 
 		Surat QuranSurat `gorm:"foreignKey:SuratID"`
 	}
@@ -34,11 +34,11 @@ type (
 	}
 
 	QuranAyatL10N struct {
-		AyatID     int `gorm:"index:idx_quran_ayat_l10n,unique"`
-		LangID     int `gorm:"index:idx_quran_ayat_l10n,unique"`
+		AyatID int `gorm:"index:idx_quran_ayat_l10n,unique"`
+		LangID int `gorm:"index:idx_quran_ayat_l10n,unique"`
 		//PageNumber int
-		Translit   string
-		Translate  string
+		Translit  string
+		Translate string
 
 		Ayat QuranAyat `gorm:"foreignKey:AyatID"`
 	}

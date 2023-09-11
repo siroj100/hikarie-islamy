@@ -2,9 +2,12 @@ package service
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"log"
 
 	"github.com/siroj100/hikarie-islamy/internal/model/db"
+	"github.com/siroj100/hikarie-islamy/internal/model/quran"
 	"github.com/siroj100/hikarie-islamy/pkg/errorx"
 )
 
@@ -23,6 +26,9 @@ type (
 		ListAyatL10N(ctx context.Context, langID, suratID, startID, count int) ([]db.QuranAyatL10N, error)
 
 		ListFirstAyat(ctx context.Context, startID, count int) ([]db.QuranAyat, error)
+
+		GetPageDetailFromFile(ctx context.Context, layoutID, pageNumber int) (quran.V1PageResp, error)
+		ListAyatByListSuratAyat(ctx context.Context, surat, ayat []int) ([]db.QuranAyat, error)
 	}
 )
 
@@ -108,6 +114,56 @@ func (s QuranService) ListFirstAyat(ctx context.Context, startID, count int) ([]
 	if err != nil {
 		log.Println(errorx.PrintTrace(err))
 		return result, errorx.ErrServerError
+	}
+	return result, nil
+}
+
+func (s QuranService) GetV1Page(ctx context.Context, layoutID, pageNumber int) (quran.V1PageResp, error) {
+	result, err := s.repo.GetPageDetailFromFile(ctx, layoutID, pageNumber)
+	if err != nil {
+		log.Println(errorx.PrintTrace(err))
+		return result, errorx.ErrServerError
+	}
+	var suratList, ayatList []int
+	lastSurat := 0
+	lastAyat := 0
+	for _, line := range result.ListLine {
+		for _, ayat := range line.ListAyat {
+			if ayat.SuratID != lastSurat {
+				suratList = append(suratList, ayat.SuratID)
+				lastSurat = ayat.SuratID
+			}
+			if ayat.AyatID != lastAyat {
+				ayatList = append(ayatList, ayat.AyatID)
+				lastAyat = ayat.AyatID
+			}
+		}
+	}
+	dbAyatList, err := s.repo.ListAyatByListSuratAyat(ctx, suratList, ayatList)
+	if err != nil {
+		log.Println(errorx.PrintTrace(err))
+		return result, errorx.ErrServerError
+	}
+	dbAyatMap := make(map[string]db.QuranAyat)
+	for i := range dbAyatList {
+		key := fmt.Sprintf("%d-%d", dbAyatList[i].SuratID, dbAyatList[i].AyatNumber)
+		dbAyatMap[key] = dbAyatList[i]
+	}
+	for i := range result.ListLine {
+		for j := range result.ListLine[i].ListAyat {
+			ayatResp := &result.ListLine[i].ListAyat[j]
+			key := fmt.Sprintf("%d-%d", ayatResp.SuratID, ayatResp.AyatID)
+			ayat, found := dbAyatMap[key]
+			if !found {
+				err = errors.New("Ayat not found: " + key)
+				log.Println(errorx.PrintTrace(err))
+				continue
+			}
+			if ayatResp.TotalChar == 0 {
+				ayatResp.TotalChar = len(ayat.AyatText) - ayatResp.CharStart
+			}
+			ayatResp.Text = ayat.AyatText[ayatResp.CharStart : ayatResp.CharStart+ayatResp.TotalChar-1]
+		}
 	}
 	return result, nil
 }

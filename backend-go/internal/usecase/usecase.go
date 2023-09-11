@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/siroj100/hikarie-islamy/internal/model"
 	"github.com/siroj100/hikarie-islamy/internal/model/db"
+	"github.com/siroj100/hikarie-islamy/internal/model/quran"
 	v1 "github.com/siroj100/hikarie-islamy/internal/model/v1"
 )
 
@@ -36,6 +37,8 @@ type (
 		ListSuratL10N(ctx context.Context, langID, startID, count int) ([]db.QuranSuratL10N, error)
 		ListAyatL10N(ctx context.Context, langID, suratID, startID, count int) ([]db.QuranAyatL10N, error)
 		ListFirstAyat(ctx context.Context, startID, count int) ([]db.QuranAyat, error)
+
+		GetV1Page(ctx context.Context, layoutID, pageNumber int) (quran.V1PageResp, error)
 	}
 
 	V1QuranSvc interface {

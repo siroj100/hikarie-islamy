@@ -32,5 +32,11 @@ func initRoutes(cfg config.Config, ucase usecase.IslamyUseCase) http.Handler {
 		v1Ep.GET("/sura", httpHandler.V1ListSura)
 	}
 
+	quranEp := e.Group("/api/quran")
+	{
+		quranEp.GET("/v1/sura", httpHandler.QuranV1ListSura)
+		quranEp.GET("/v1/page/:layoutID/:pageNumber", httpHandler.QuranV1Page)
+	}
+
 	return e
 }

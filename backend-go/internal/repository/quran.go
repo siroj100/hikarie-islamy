@@ -2,8 +2,15 @@ package repository
 
 import (
 	"context"
+	"fmt"
+	"log"
+	"os"
 
 	"github.com/siroj100/hikarie-islamy/internal/model/db"
+	"github.com/siroj100/hikarie-islamy/internal/model/quran"
+	"github.com/siroj100/hikarie-islamy/pkg/errorx"
+
+	"gopkg.in/yaml.v2"
 )
 
 type (
@@ -66,6 +73,28 @@ func (r QuranRepo) ListFirstAyat(ctx context.Context, startID, count int) ([]db.
 	err := r.db.GetTxRead(ctx).Model(db.QuranAyat{}).
 		Where("ayat_number = 1 AND surat_id > ?", startID).
 		Limit(count).
+		Find(&result).Error
+	return result, err
+}
+
+func (r QuranRepo) GetPageDetailFromFile(ctx context.Context, layoutID, pageNumber int) (quran.V1PageResp, error) {
+	var result quran.V1PageResp
+	raw, err := os.ReadFile(fmt.Sprintf("static/quran/v1Page%02d%03d.yaml", layoutID, pageNumber))
+	if err != nil {
+		log.Println(errorx.PrintTrace(err))
+		return result, err
+	}
+	if err = yaml.Unmarshal(raw, &result); err != nil {
+		log.Println(errorx.PrintTrace(err))
+		return result, err
+	}
+	return result, nil
+}
+
+func (r QuranRepo) ListAyatByListSuratAyat(ctx context.Context, surat, ayat []int) ([]db.QuranAyat, error) {
+	var result []db.QuranAyat
+	err := r.db.GetTxRead(ctx).Model(db.QuranAyat{}).
+		Where("surat_id IN (?) AND ayat_number IN (?)", surat, ayat).
 		Find(&result).Error
 	return result, err
 }
