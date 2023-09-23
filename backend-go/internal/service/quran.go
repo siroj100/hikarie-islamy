@@ -149,6 +149,7 @@ func (s QuranService) GetV1Page(ctx context.Context, layoutID, pageNumber int) (
 		key := fmt.Sprintf("%d-%d", dbAyatList[i].SuratID, dbAyatList[i].AyatNumber)
 		dbAyatMap[key] = dbAyatList[i]
 	}
+	charStart := 0
 	for i := range result.ListLine {
 		for j := range result.ListLine[i].ListAyat {
 			ayatResp := &result.ListLine[i].ListAyat[j]
@@ -159,10 +160,16 @@ func (s QuranService) GetV1Page(ctx context.Context, layoutID, pageNumber int) (
 				log.Println(errorx.PrintTrace(err))
 				continue
 			}
+			ayatResp.CharStart = charStart
 			if ayatResp.TotalChar == 0 {
 				ayatResp.TotalChar = len(ayat.AyatText) - ayatResp.CharStart
 			}
-			ayatResp.Text = ayat.AyatText[ayatResp.CharStart : ayatResp.CharStart+ayatResp.TotalChar-1]
+			charStart += ayatResp.TotalChar
+			if charStart >= len(ayat.AyatText) {
+				charStart = 0
+			}
+			log.Printf("#%d %d:%d (%d), %d-%d\n", i+1, ayat.SuratID, ayat.AyatNumber, len(ayat.AyatText), ayatResp.CharStart, ayatResp.CharStart+ayatResp.TotalChar)
+			ayatResp.Text = ayat.AyatText[ayatResp.CharStart : ayatResp.CharStart+ayatResp.TotalChar]
 		}
 	}
 	return result, nil

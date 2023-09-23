@@ -8,67 +8,76 @@ listLine:
   - listAyat:
       - suratId: 2
         ayatId: 6
-        charStart: 0
-        totalChar: 154
+        totalChar: 165
   - listAyat:
       - suratId: 2
         ayatId: 6
-        charStart: 154
       - suratId: 2
         ayatId: 7
-        charStart: 0
+        totalChar: 120
   - listAyat:
       - suratId: 2
         ayatId: 7
       - suratId: 2
         ayatId: 8
+        totalChar: 29
   - listAyat:
       - suratId: 2
         ayatId: 8
   - listAyat:
       - suratId: 2
         ayatId: 9
+        totalChar: 163
   - listAyat:
       - suratId: 2
         ayatId: 9
       - suratId: 2
         ayatId: 10
+        totalChar: 105
   - listAyat:
       - suratId: 2
         ayatId: 10
       - suratId: 2
         ayatId: 11
+        totalChar: 40
   - listAyat:
       - suratId: 2
         ayatId: 11
       - suratId: 2
         ayatId: 12
+        totalChar: 31
   - listAyat:
       - suratId: 2
         ayatId: 12
       - suratId: 2
         ayatId: 13
+        totalChar: 40
   - listAyat:
       - suratId: 2
         ayatId: 13
+        totalChar: 159
   - listAyat:
       - suratId: 2
         ayatId: 13
       - suratId: 2
         ayatId: 14
+        totalChar: 27
   - listAyat:
       - suratId: 2
         ayatId: 14
+        totalChar: 184
   - listAyat:
       - suratId: 2
         ayatId: 14
       - suratId: 2
         ayatId: 15
+        totalChar: 82
   - listAyat:
       - suratId: 2
         ayatId: 15
       - suratId: 2
         ayatId: 16
+        totalChar: 87
   - listAyat:
       - suratId: 2
         ayatId: 16
