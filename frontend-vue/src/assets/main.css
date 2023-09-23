@@ -1,4 +1,13 @@
-@import "./base.css";
+@import './base.css';
+
+@font-face {
+  font-family: fontArab;
+  src: url("./LPMQ-IsepMisbah.ttf");
+}
+
+.arab {
+  font-family: fontArab;
+}
 
 #app {
   max-width: 1280px;
@@ -27,9 +36,9 @@ a,
     place-items: center;
   }
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+  /*#app {*/
+  /*  display: grid;*/
+  /*  grid-template-columns: 1fr 1fr;*/
+  /*  padding: 0 2rem;*/
+  /*}*/
 }
