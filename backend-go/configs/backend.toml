@@ -3,7 +3,5 @@
 [Database.Islamy]
 Driver = "postgres"
 Host = "localhost"
-User = "root"
-Password = "root"
 DbName = "islamy"
 Debug = false

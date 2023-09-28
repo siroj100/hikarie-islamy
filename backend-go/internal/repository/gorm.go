@@ -150,7 +150,13 @@ func GormOpenDb(driver, host string, port int, username, password, dbName, dbSch
 		if len(dbSchema) == 0 {
 			dbSchema = "public"
 		}
-		dsn := fmt.Sprintf("user=%s password=%s host=%s port=%d dbname=%s search_path=%s", username, password, host, port, dbName, dbSchema)
+		dsn := fmt.Sprintf("host=%s port=%d dbname=%s search_path=%s", host, port, dbName, dbSchema)
+		if len(strings.TrimSpace(username)) > 0 {
+			dsn += " user=" + username
+			if len(strings.TrimSpace(password)) > 0 {
+				dsn += " password" + password
+			}
+		}
 		//log.Println("dsn:", dsn)
 		theDb, err := gorm.Open(postgres.New(postgres.Config{
 			DSN: dsn,
