@@ -1,0 +1,102 @@
+surat:
+  suratId: 2
+  ayatCount: 285
+layoutId: 2
+pageNumber: 3
+numOfLines: 18
+listLine:
+  - listAyat:
+      - suratId: 2
+        ayatId: 5
+      - suratId: 2
+        ayatId: 6
+        totalChar: 11
+  - listAyat:
+      - suratId: 2
+        ayatId: 6
+        totalChar: 154
+  - listAyat:
+      - suratId: 2
+        ayatId: 6
+      - suratId: 2
+        ayatId: 7
+        totalChar: 120
+  - listAyat:
+      - suratId: 2
+        ayatId: 7
+      - suratId: 2
+        ayatId: 8
+        totalChar: 30
+  - listAyat:
+      - suratId: 2
+        ayatId: 8
+  - listAyat:
+      - suratId: 2
+        ayatId: 9
+        totalChar: 163
+  - listAyat:
+      - suratId: 2
+        ayatId: 9
+      - suratId: 2
+        ayatId: 10
+        totalChar: 123
+  - listAyat:
+      - suratId: 2
+        ayatId: 10
+      - suratId: 2
+        ayatId: 11
+        totalChar: 71
+  - listAyat:
+      - suratId: 2
+        ayatId: 11
+      - suratId: 2
+        ayatId: 12
+        totalChar: 72
+  - listAyat:
+      - suratId: 2
+        ayatId: 12
+      - suratId: 2
+        ayatId: 13
+        totalChar: 103
+  - listAyat:
+      - suratId: 2
+        ayatId: 13
+        totalChar: 181
+  - listAyat:
+      - suratId: 2
+        ayatId: 13
+      - suratId: 2
+        ayatId: 14
+        totalChar: 137
+  - listAyat:
+      - suratId: 2
+        ayatId: 14
+      - suratId: 2
+        ayatId: 15
+        totalChar: 18
+  - listAyat:
+      - suratId: 2
+        ayatId: 15
+      - suratId: 2
+        ayatId: 16
+        totalChar: 23
+  - listAyat:
+      - suratId: 2
+        ayatId: 16
+        totalChar: 156
+  - listAyat:
+      - suratId: 2
+        ayatId: 16
+      - suratId: 2
+        ayatId: 17
+        totalChar: 108
+  - listAyat:
+      - suratId: 2
+        ayatId: 17
+        totalChar: 134
+  - listAyat:
+      - suratId: 2
+        ayatId: 17
+      - suratId: 2
+        ayatId: 18
+
