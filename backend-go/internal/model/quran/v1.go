@@ -24,6 +24,7 @@ type (
 		SuratID int    `json:"suratId" yaml:"suratId"`
 		AyatID  int    `json:"ayatId" yaml:"ayatId"`
 		Text    string `json:"text"`
+		AyatEnd bool   `json:"ayatEnd"`
 
 		CharStart int `json:"charStart" yaml:"charStart"`
 		TotalChar int `json:"totalChar" yaml:"totalChar"`

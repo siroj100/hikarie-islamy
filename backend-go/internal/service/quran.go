@@ -170,6 +170,9 @@ func (s QuranService) GetV1Page(ctx context.Context, layoutID, pageNumber int) (
 			}
 			log.Printf("#%d %d:%d (%d), %d-%d\n", i+1, ayat.SuratID, ayat.AyatNumber, len(ayat.AyatText), ayatResp.CharStart, ayatResp.CharStart+ayatResp.TotalChar)
 			ayatResp.Text = ayat.AyatText[ayatResp.CharStart : ayatResp.CharStart+ayatResp.TotalChar]
+			if ayatResp.CharStart+ayatResp.TotalChar >= len(ayat.AyatText) {
+				ayatResp.AyatEnd = true
+			}
 		}
 	}
 	return result, nil
