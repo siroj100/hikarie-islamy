@@ -1,5 +1,7 @@
 package db
 
+import "database/sql"
+
 type (
 	QuranL10N struct {
 		LangID     int `gorm:"primaryKey"`
@@ -42,6 +44,25 @@ type (
 
 		Ayat QuranAyat `gorm:"foreignKey:AyatID"`
 	}
+
+	QuranLayout struct {
+		LayoutID    int `gorm:"primaryKey"`
+		Name        string
+		Description string
+		NumOfLines  int
+	}
+
+	QuranPageDetail struct {
+		LayoutID     int `gorm:"index:idx_quran_page_detail,unique"`
+		PageNumber   int `gorm:"index:idx_quran_page_detail,unique"`
+		LineNumber   int `gorm:"index:idx_quran_page_detail,unique"`
+		SuratID      int `gorm:"index:idx_quran_page_detail,unique"`
+		AyatNumber   int `gorm:"index:idx_quran_page_detail,unique"`
+		IsBasmalah   sql.NullBool
+		IsSuratTitle sql.NullBool
+		StartIndex   int
+		EndIndex     int
+	}
 )
 
 func (m QuranL10N) TableName() string {
@@ -62,4 +83,12 @@ func (m QuranAyat) TableName() string {
 
 func (m QuranAyatL10N) TableName() string {
 	return "quran_ayat_l10n"
+}
+
+func (m QuranLayout) TableName() string {
+	return "quran_layout"
+}
+
+func (m QuranPageDetail) TableName() string {
+	return "quran_page_detail"
 }

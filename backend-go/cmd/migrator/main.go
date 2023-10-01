@@ -17,6 +17,7 @@ func main() {
 	err := db0.Pri().AutoMigrate(
 		db.QuranL10N{}, db.QuranSurat{}, db.QuranSuratL10N{},
 		db.QuranAyat{}, db.QuranAyatL10N{},
+		db.QuranLayout{}, db.QuranPageDetail{},
 	)
 	log.Println(err)
 	ctx := context.TODO()
